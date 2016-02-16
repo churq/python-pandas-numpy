@@ -1,0 +1,33 @@
+import psycopg2
+import pandas
+import numpy
+conn= psycopg2.connect("dbname='mydatabase' user='postgres' host = 'localhost' password='924891'")
+cur = conn.cursor()
+commandstr = "select * from celery_taskmeta"
+
+cur.execute(commandstr)
+result = cur.fetchall()
+myarray = pandas.DataFrame([])
+for rows in result:# rows is tuple object:(1, 'a7398f7e-d0fa-46fd-9051-aead4eaafa63', 'SUCCESS',...., None)
+
+     rows =  [str(i) for i in rows]   # rows become 6X1 column object instead of 1X6 row object
+     rows = list(numpy.array(rows).reshape(1,len(rows)))
+     print (numpy.shape(rows))
+
+     #pandas.DataFrame(myarary).append(rows) print 'output', but append doesn't happen in-place, so the output should store in myarray
+     #ignore index: do not use index labels
+     #numpy.array object cannot be appended to pandas.DataFrame by using "append" method
+
+     myarray = myarray.append(rows,ignore_index=True)
+
+
+print myarray
+
+# output results
+# 0                                     1        2      3  \
+# 0  1  a7398f7e-d0fa-46fd-9051-aead4eaafa63  SUCCESS  �K.
+# 1  2  315e561c-4c56-48bf-a33e-ee8147ff3b08  SUCCESS  �K&.
+#
+#                             4     5
+# 0  2016-02-15 05:20:57.858000  None
+# 1  2016-02-16 05:18:06.690000  None
