@@ -1,0 +1,24 @@
+data = np.array([[1, 2, 3, 4,6],
+                     [2, 3, 1],
+                     [5, 5, 5, 5],
+                     [1, 1]])
+
+    # Get lengths of each row of data
+    lens = np.array([len(data[i]) for i in range(len(data))])
+
+    # Mask of valid places in each row
+    mask = np.arange(5) < lens[:, None]
+
+    # Setup output array and put elements from data into masked positions
+    out = np.zeros(mask.shape)
+    out[mask] = np.hstack((data[:]))
+
+
+
+
+
+
+
+
+
+
